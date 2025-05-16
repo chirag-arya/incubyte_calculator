@@ -24,5 +24,10 @@ RSpec.describe StringCalculator do
     it "returns the sum of two numbers" do
       expect(described_class.add("1,5")).to eq(6)
     end
+
+    it "supports custom delimiter using //syntax" do
+      expect(described_class.add("//;\n1;2")).to eq(3)
+      expect(described_class.add("//|\n4|5|6")).to eq(15)
+    end
   end
 end
