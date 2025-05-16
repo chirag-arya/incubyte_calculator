@@ -6,16 +6,15 @@ class StringCalculator
 
     if numbers.start_with?("//")
       header, numbers = numbers.split("\n", 2)
-      delimiter = Regexp.escape(header[2])
+      delimiter_char = Regexp.escape(header[2])
+      delimiter = /#{delimiter_char}/
     end
 
-    number_list = numbers.split(/#{delimiter}/).map(&:to_i)
+    values = numbers.split(delimiter).map(&:to_i)
 
-    negatives = number_list.select { |n| n < 0 }
-    unless negatives.empty?
-      raise ArgumentError, "negative numbers not allowed: #{negatives.join(',')}"
-    end
+    negatives = values.select { |n| n.negative? }
+    raise ArgumentError, "negative numbers not allowed: #{negatives.join(',')}" if negatives.any?
 
-    number_list.sum
+    values.sum
   end
 end
